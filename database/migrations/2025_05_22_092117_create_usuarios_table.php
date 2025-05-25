@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('telefono')->unique()->nullable();
             $table->string('direccion');
-            $table->string('correo')->unique();
-            $table->timestamp('correo_verified_at')->nullable();
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('estado', ['Activo', 'Inactivo', 'Bloqueado'])->default('Inactivo');
             $table->foreignId('rol_id')->nullable()->constrained('roles')->onDelete('set null');
@@ -26,7 +26,7 @@ return new class extends Migration
         });
         
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('correo')->primary();
+            $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });

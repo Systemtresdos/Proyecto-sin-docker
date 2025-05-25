@@ -21,7 +21,7 @@ class Usuario extends Authenticatable
         'nombre',
         'telefono',
         'direccion',
-        'correo',
+        'email',
         'password',
         'estado',
         'rol_id',
@@ -42,10 +42,14 @@ class Usuario extends Authenticatable
      *
      * @return array<string, string>
      */
+/*     public function getEmailForPasswordReset()
+    {
+        return $this->correo;
+    } */
     protected function casts(): array
     {
         return [
-            'correo_verified_at' => 'datetime',
+            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }

@@ -13,7 +13,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     public string $nombre = '';
     public string $telefono = '';
     public string $direccion = '';
-    public string $correo = '';
+    public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
     public string $rol_id = '2';
@@ -27,7 +27,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             'nombre' => ['required', 'string', 'max:255'],
             'telefono' => ['required', 'string', 'max:255'],
             'direccion' => ['required', 'string', 'max:255'],
-            'correo' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . Usuario::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . Usuario::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
             'rol_id' => ['required', 'integer', 'exists:roles,id'],
         ]);
@@ -50,7 +50,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+    <x-auth-header :title="__('Registrate')" :description="__('Llena los siguientes campos para crear tu cuenta')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -67,7 +67,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
             :placeholder="__('Direccion')" />
 
         <!-- Email Address -->
-        <flux:input wire:model="correo" :label="__('Correo electronico')" type="email" required autocomplete="correo"
+        <flux:input wire:model="email" :label="__('Correo electronico')" type="email" required autocomplete="email"
             placeholder="email@example.com" />
 
         <!-- Password -->

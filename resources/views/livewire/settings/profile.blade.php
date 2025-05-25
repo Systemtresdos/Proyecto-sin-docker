@@ -7,7 +7,9 @@ use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 
 new class extends Component {
-    public string $name = '';
+    public string $nombre = '';
+    public string $telefono = '';
+    public string $direccion = '';
     public string $email = '';
 
     /**
@@ -15,7 +17,9 @@ new class extends Component {
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
+        $this->nombre = Auth::user()->nombre;
+        $this->telefono = Auth::user()->telefono;
+        $this->direccion = Auth::user()->direccion;
         $this->email = Auth::user()->email;
     }
 
@@ -27,16 +31,10 @@ new class extends Component {
         $user = Auth::user();
 
         $validated = $this->validate([
-            'name' => ['required', 'string', 'max:255'],
-
-            'email' => [
-                'required',
-                'string',
-                'lowercase',
-                'email',
-                'max:255',
-                Rule::unique(User::class)->ignore($user->id)
-            ],
+            'nombre' => ['required', 'string', 'max:255'],
+            'telefono' => ['nullable', 'string', 'max:10'],
+            'direccion' => ['nullable', 'string', 'max:10'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
         ]);
 
         $user->fill($validated);
@@ -47,7 +45,7 @@ new class extends Component {
 
         $user->save();
 
-        $this->dispatch('profile-updated', name: $user->name);
+        $this->dispatch('profile-updated', nombre: $user->nombre);
     }
 
     /**
@@ -72,19 +70,24 @@ new class extends Component {
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout :heading="__('Profile')" :subheading="__('Update your name and email address')">
+    <x-settings.layout :heading="__('Perfil')" :subheading="__('Actualiza tu nombre y correo electronico')">
         <form wire:submit="updateProfileInformation" class="my-6 w-full space-y-6">
-            <flux:input wire:model="name" :label="__('Name')" type="text" required autofocus autocomplete="name" />
+            <flux:input wire:model="nombre" :label="__('Nombre')" type="text" required autofocus
+                autocomplete="nombre" />
+            <flux:input wire:model="telefono" :label="__('Telefono')" type="text" required autocomplete="telefono" />
+            <flux:input wire:model="direccion" :label="__('Direccion')" type="text" required
+                autocomplete="direccion" />
 
             <div>
-                <flux:input wire:model="email" :label="__('Email')" type="email" required autocomplete="email" />
+                <flux:input wire:model="email" :label="__('Correo')" type="email" required autocomplete="email" />
 
-                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail &&! auth()->user()->hasVerifiedEmail())
+                @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !auth()->user()->hasVerifiedEmail())
                     <div>
                         <flux:text class="mt-4">
                             {{ __('Your email address is unverified.') }}
 
-                            <flux:link class="text-sm cursor-pointer" wire:click.prevent="resendVerificationNotification">
+                            <flux:link class="text-sm cursor-pointer"
+                                wire:click.prevent="resendVerificationNotification">
                                 {{ __('Click here to re-send the verification email.') }}
                             </flux:link>
                         </flux:text>
@@ -100,7 +103,7 @@ new class extends Component {
 
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
-                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>
+                    <flux:button variant="primary" type="submit" class="w-full">{{ __('Guardar') }}</flux:button>
                 </div>
 
                 <x-action-message class="me-3" on="profile-updated">

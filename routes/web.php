@@ -10,7 +10,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 Route::view('dashboard','dashboard')
-    ->middleware(['auth','verifierd'])
+    ->middleware(['auth','verified'])
     ->name('dashboard');
 
 // Ruta para gestión de usuarios

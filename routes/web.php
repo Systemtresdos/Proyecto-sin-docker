@@ -9,8 +9,13 @@ use App\Livewire\RoleManagement; // Componente Livewire para roles
 
 // Ruta principal que carga la vista 'dashboard.blade.php'
 Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard');
+
+    return view('welcome');
+})->name('home');
+Route::view('dashboard','dashboard')
+    ->middleware(['auth','verified'])
+    ->name('dashboard');
+
 
 // Ruta para gestión de usuarios
 Route::get('/users', UserManagement::class)->name('users.index');

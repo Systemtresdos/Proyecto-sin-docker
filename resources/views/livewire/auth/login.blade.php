@@ -13,7 +13,7 @@ use Livewire\Volt\Component;
 
 new #[Layout('components.layouts.auth')] class extends Component {
     #[Validate('required|string|email')]
-    public string $correo = '';
+    public string $email = '';
 
     #[Validate('required|string')]
     public string $password = '';
@@ -29,11 +29,11 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         $this->ensureIsNotRateLimited();
 
-        if (!Auth::attempt(['correo' => $this->correo, 'password' => $this->password], $this->remember)) {
+        if (!Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'correo' => __('auth.failed'),
+                'email' => __('auth.failed'),
             ]);
         }
 
@@ -57,7 +57,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'correo' => __('auth.throttle', [
+            'email' => __('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -69,20 +69,20 @@ new #[Layout('components.layouts.auth')] class extends Component {
      */
     protected function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->correo) . '|' . request()->ip());
+        return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
     }
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+    <x-auth-header :title="__('Iniciar sesion')" :description="__('Ingresa tu correo y contraseña para poder ingresar')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
 
     <form wire:submit="login" class="flex flex-col gap-6">
         <!-- Email Address -->
-        <flux:input wire:model="correo" :label="__('Correo electronico')" type="email" required autofocus
-            autocomplete="correo" placeholder="email@example.com" />
+        <flux:input wire:model="email" :label="__('Correo electronico')" type="email" required autofocus
+            autocomplete="email" placeholder="email@example.com" />
 
         <!-- Password -->
         <div class="relative">

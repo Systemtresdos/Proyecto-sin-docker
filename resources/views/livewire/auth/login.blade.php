@@ -74,7 +74,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
 }; ?>
 
 <div class="flex flex-col gap-6">
-    <x-auth-header :title="__('Iniciar sesion')" :description="__('Ingresa tu correo y contraseña para ingresar')" />
+    <x-auth-header :title="__('Iniciar sesion')" :description="__('Ingresa tu correo y contraseña para poder ingresar')" />
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />

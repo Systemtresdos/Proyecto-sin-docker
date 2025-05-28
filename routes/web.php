@@ -28,3 +28,17 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/categorias', function () {
+    return view('categorias');
+})->name('categorias.index');
+
+Route::get('/productos', function () {
+    return view('productos');
+})->name('productos.index');
+/* Route::get('/productos', Index::class)
+    ->name('productos.index'); */
+Route::get('/usuarios', function () {
+    return view('usuarios');
+})->name('usuarios.index');
+

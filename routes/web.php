@@ -4,14 +4,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Livewire\Productos\Create;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
+use App\Livewire\UserManagement; // Componente Livewire para usuarios
+use App\Livewire\RoleManagement; // Componente Livewire para roles
 
+// Ruta principal que carga la vista 'dashboard.blade.php'
 Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+    return view('dashboard');
+})->name('dashboard');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Ruta para gestión de usuarios
+Route::get('/users', UserManagement::class)->name('users.index');
+
+// Ruta para gestión de roles
+Route::get('/roles', RoleManagement::class)->name('roles.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');

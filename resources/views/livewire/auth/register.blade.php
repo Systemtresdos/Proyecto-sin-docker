@@ -25,7 +25,7 @@ new #[Layout('components.layouts.auth')] class extends Component {
     {
         $validated = $this->validate([
             'nombre' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:10'],
             'direccion' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . Usuario::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],

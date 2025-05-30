@@ -13,27 +13,11 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Menu')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}
-                    </flux:navlist.item>
-                    <flux:navlist.item href="#" icon="list-bullet">Pedidos</flux:navlist.item>
-                </flux:navlist.group>
-                <flux:navlist.group heading="Productos" expandable :expanded="false">
-                    <flux:navlist.item href="{{route('productos.index')}}"
-                    icon="hamburger">Lista de productos</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nuevo producto</flux:navlist.item>
-                </flux:navlist.group>
-                <flux:navlist.group heading="Categorias" expandable :expanded="false">
-                    <flux:navlist.item href="{{route('categorias.index')}}" icon="salad">Lista de categorias</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nueva categoria</flux:navlist.item>
-                </flux:navlist.group>
-                <flux:navlist.group heading="Roles" expandable :expanded="false">
-                    <flux:navlist.item href="#" icon="person-standing">Lista de roles</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nueva rol</flux:navlist.item>
-                </flux:navlist.group>
-                <flux:navlist.group heading="Usuarios" expandable :expanded="false">
-                    <flux:navlist.item href="#" icon="users">Lista de usuarios</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="user-plus">Nuevo usuario</flux:navlist.item>
+                <flux:navlist.group :heading="__('Platform')" class="grid">
+                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
+                    <flux:navlist.item icon="folder-git-2" href="#" target="_blank">
+                {{ __('Usuarios') }}
+                </flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

@@ -2,4 +2,3 @@
     <div class="p-4">
         <livewire:categoria />
     </div>
-</x-layouts.app>

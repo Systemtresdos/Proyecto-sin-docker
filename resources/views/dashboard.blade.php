@@ -1,19 +1,37 @@
 <x-layouts.app :title="__('Dashboard')">
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
-        <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-                {{-- <livewire:categoria /> --}}
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-            <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
-            </div>
-        </div>
-        <div class="relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
-            <x-placeholder-pattern class="absolute inset-0 size-full stroke-gray-900/20 dark:stroke-neutral-100/20" />
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-red-400 mb-8 text-center">Nuestros Productos</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach ($productos as $producto)
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <!-- Imagen del producto -->
+                    <div class="h-48 overflow-hidden">
+                        <img 
+                            src="{{ asset('storage/' . $producto->imagen) }}" 
+                            alt="" 
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                        >
+                    </div>
+                    
+                    <!-- Contenido del producto -->
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h2 class="text-xl font-semibold text-gray-800">{{$producto->nombre}}</h2>
+                            <span class="bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded">
+                                {{$producto->categoria->nombre}}
+                            </span>
+                        </div>
+                        
+                        <p class="text-gray-600 mb-4">{{$producto->descripcion}}</p>
+                        
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl font-bold text-gray-900">{{$producto->precio_venta}}Bs</span>
+                            
+                            <livewire:btn-agregar-carrito :producto_id="$producto->id" :producto_nombre="$producto->nombre" :key="'btn-agregar-'.$producto->id"/>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
     </div>
 </x-layouts.app>

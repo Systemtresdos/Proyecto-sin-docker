@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\Productos\Create;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 use App\Livewire\UserManagement; // Componente Livewire para usuarios
@@ -11,15 +12,12 @@ use App\Livewire\RoleManagement; // Componente Livewire para roles
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
-Route::view('dashboard','dashboard')
-    ->middleware(['auth','verified'])
-    ->name('dashboard');
 
-// Ruta para gestión de usuarios
-Route::get('/users', UserManagement::class)->name('users.index');
+Route::get('/dashboard', function () {
+    $productos = Producto::all();
+    return view('dashboard', compact('productos'));
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Ruta para gestión de roles
-Route::get('/roles', RoleManagement::class)->name('roles.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -38,7 +36,29 @@ Route::get('/categorias', function () {
 Route::get('/productos', function () {
     return view('productos');
 })->name('productos.index');
+
+Route::get('/roles', function () {
+    return view('roles');
+})->name('roles.index');
+
+Route::get('/usuarios', function () {
+    return view('usuarios');
+})->name('usuarios.index');
+
+Route::get('/carrito', function () {
+    return view('carrito');
+})->name('carrito.index');
+
+// Ruta para gestión de usuarios
+Route::get('/users', UserManagement::class)->name('users.index');
+
+// Ruta para gestión de roles
+Route::get('/roles', RoleManagement::class)->name('roles.index');
+
 /* Route::get('/productos', Index::class)
     ->name('productos.index'); */
 
-// Volt::route('/categorias', 'categoria')->name('categorias.index');
+/* Route::get('/usuarios', function () {
+    return view('usuarios');
+})->name('usuarios.index'); */
+

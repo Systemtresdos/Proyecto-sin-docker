@@ -1,23 +1,22 @@
 <?php
 
 use Livewire\Volt\Component;
-use App\Models\Categoria;
+use App\Models\Rol;
 
 new class extends Component {
-    //
-    public $categoria_id;
+    public $rol_id;
     public $nombre;
     public $descripcion;
-    public $categorias;
+    public $roles;
 
     public function mount()
     {
-        $this->actualizarCategorias();
+        $this->actualizarRoles();
     }
 
-    public function actualizarCategorias()
+    public function actualizarRoles()
     {
-        $this->categorias = Categoria::all();
+        $this->roles = Rol::all();
     }
     public function crear():void
     {
@@ -26,43 +25,43 @@ new class extends Component {
             'descripcion' => ['nullable', 'string', 'max:500'],
         ]);
 
-        if($this->categoria_id) {
-            $categoria = Categoria::find($this->categoria_id);
-            if($categoria) {
-                $categoria->update([
+        if($this->rol_id) {
+            $rol = Rol::find($this->rol_id);
+            if($rol) {
+                $rol->update([
                     'nombre' => $this->nombre,
                     'descripcion' => $this->descripcion,
             ]);
         }
             } else {
-                Categoria::create([
+                Rol::create([
                     'nombre' => $this->nombre,
                     'descripcion' => $this->descripcion,
                 ]);
             }
         $this->vaciarFormulario();
-        $this->actualizarCategorias();
+        $this->actualizarRoles();
     }
 
     public function editar($id):void
     {
-        $categoria = Categoria::find($id);
-        if($categoria) {
-            $this->categoria_id = $categoria->id;
-            $this->nombre = $categoria->nombre;
-            $this->descripcion = $categoria->descripcion;
+        $rol = Rol::find($id);
+        if($rol) {
+            $this->rol_id = $rol->id;
+            $this->nombre = $rol->nombre;
+            $this->descripcion = $rol->descripcion;
         }
     }
 
     public function eliminar($id):void{
-        $categoria = Categoria::find($id);
-        $categoria->delete();
-        $this->actualizarCategorias();
+        $rol = Rol::find($id);
+        $rol->delete();
+        $this->actualizarRoles();
     }
 
     public function vaciarFormulario():void
     {
-        $this->reset(['categoria_id', 'nombre', 'descripcion']);
+        $this->reset(['rol_id', 'nombre', 'descripcion']);
     }
 }; ?>
 
@@ -70,9 +69,9 @@ new class extends Component {
     <div>
         <form wire:submit="crear">
             <flux:input label="Nombre" type="text" wire:model="nombre" placeholder="Ingrese el nombre de la categoría" />
-            <flux:textarea label="Descripción" wire:model="descripcion" placeholder="Ingrese una descripción de la categoría" />
+            <flux:textarea label="Descripción" wire:model="descripcion" placeholder="Ingrese una descripción del rol" />
             <flux:button class="mt-4" type="submit" variant="primary">
-                {{ $categoria_id ? 'Actualizar Categoría' : 'Crear Categoría' }}
+                {{ $rol_id ? 'Actualizar Rol' : 'Crear Rol' }}
             </flux:button>
             <flux:button wire:click="vaciarFormulario" class="mt-4" variant="ghost">
                 Cancelar
@@ -90,14 +89,14 @@ new class extends Component {
                 </tr>
             </thead>
             <tbody>
-                @foreach($categorias as $categoria)
+                @foreach($roles as $rol)
                     <tr>
-                        <td>{{ $categoria->id }}</td>
-                        <td>{{ $categoria->nombre }}</td>
-                        <td>{{ $categoria->descripcion }}</td>
+                        <td>{{ $rol->id }}</td>
+                        <td>{{ $rol->nombre }}</td>
+                        <td>{{ $rol->descripcion }}</td>
                         <td>
-                            <flux:button wire:click="editar({{ $categoria->id }})" variant="filled">Editar</flux:button>
-                            <flux:button wire:click="eliminar({{ $categoria->id }})" variant="danger">Eliminar</flux:button>
+                            <flux:button wire:click="editar({{ $rol->id }})" variant="filled">Editar</flux:button>
+                            <flux:button wire:click="eliminar({{ $rol->id }})" variant="danger">Eliminar</flux:button>
                         </td>
                     </tr>
                 @endforeach

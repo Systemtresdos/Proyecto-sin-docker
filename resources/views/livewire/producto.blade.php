@@ -3,8 +3,11 @@
 use Livewire\Volt\Component;
 use App\Models\Producto;
 use App\Models\Categoria;
+use Livewire\WithFileUploads;
 
 new class extends Component {
+    use WithFileUploads;
+
     public $productos;
     public $categorias;
     public $producto_id;
@@ -33,7 +36,6 @@ new class extends Component {
             'codigo' => 'required|string|max:100',
             'precio_venta' => 'required|numeric|min:0',
             'imagen' => 'nullable|image|max:2048',
-            'calificacion' => 'nullable|numeric|min:0|max:5',
             'categoria_id' => 'required|exists:categorias,id',
         ]);
 
@@ -76,6 +78,12 @@ new class extends Component {
             $this->categoria_id = $producto->categoria_id;
         }
     }
+    public function eliminar($id):void
+    {
+        $producto = Producto::find($id);
+        $producto->delete();
+        $this->actualizarProductos();
+    }
     public function vaciarFormulario():void
     {
         $this->producto_id = null;
@@ -109,7 +117,7 @@ new class extends Component {
                     <img src="{{ $imagen->temporaryUrl() }}" alt="Vista previa de la imagen" class="w-32 h-32 object-cover rounded">
                 </div>
             @endif
-            <flux:select label="Categoría" wire:model="categoria_id" placeholder="Seleccione una categoría">
+            <flux:select label="Categoría" wire:model="categoria_id">
                 <option value="">Seleccione una categoría</option>
                 @foreach($categorias as $categoria)
                     <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -122,4 +130,51 @@ new class extends Component {
                 Cancelar
             </flux:button>
         </form>
+<<<<<<< HEAD
+
+        <div>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Código</th>
+                        <th>Precio</th>
+                        <th>Imagen</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </tbody>
+                <tbody>
+                    @foreach($productos as $producto)
+                        <tr>
+                            <td>{{ $producto->id }}</td>
+                            <td>{{ $producto->nombre }}</td>
+                            <td>{{ $producto->descripcion }}</td>
+                            <td>{{ $producto->codigo }}</td>
+                            <td>{{ $producto->precio_venta }}</td>
+                            <td>
+                                @if($producto->imagen)
+                                    <img src="{{ asset('storage/' . $producto->imagen) }}" alt="Imagen del producto" class="w-16 h-16 object-cover">
+                                @else
+                                    No disponible
+                                @endif
+                            </td>
+                            <td>{{ $producto->categoria ? $producto->categoria->nombre : 'Sin categoría' }}</td>
+                            <td>
+                                <button wire:click="editar({{ $producto->id }})">Editar</button>
+                                <button wire:click="eliminar({{ $producto->id }})">Eliminar</button>
+                            </td>
+                        </tr>
+                    @endforeach
+            </table>
+        </div>
+=======
+<<<<<<< HEAD
+>>>>>>> 66dddbe0d4d9c95e0277634375ef73936f9a50b0
 </div>
+
+=======
+</div>
+>>>>>>> 7a742ac (subido de categoria dashboard)

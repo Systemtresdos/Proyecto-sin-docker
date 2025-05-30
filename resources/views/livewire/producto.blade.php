@@ -130,6 +130,7 @@ new class extends Component {
                 Cancelar
             </flux:button>
         </form>
+<<<<<<< HEAD
 
         <div>
             <table>
@@ -169,4 +170,11 @@ new class extends Component {
                     @endforeach
             </table>
         </div>
+=======
+<<<<<<< HEAD
+>>>>>>> 66dddbe0d4d9c95e0277634375ef73936f9a50b0
 </div>
+
+=======
+</div>
+>>>>>>> 7a742ac (subido de categoria dashboard)

@@ -42,12 +42,8 @@ Route::get('/productos', function () {
 })->name('productos.index');
 /* Route::get('/productos', Index::class)
     ->name('productos.index'); */
-<<<<<<< HEAD
 
-// Volt::route('/categorias', 'categoria')->name('categorias.index');
-=======
 Route::get('/usuarios', function () {
     return view('usuarios');
 })->name('usuarios.index');
 
->>>>>>> 7a742ac (subido de categoria dashboard)

@@ -10,10 +10,13 @@ test('registration screen can be rendered', function () {
 
 test('new users can register', function () {
     $response = Volt::test('auth.register')
-        ->set('name', 'Test User')
+        ->set('nombre', 'Test User')
+        ->set('telefono', '00000000')
+        ->set('direccion', 'AV falsa')
         ->set('email', 'test@example.com')
         ->set('password', 'password')
         ->set('password_confirmation', 'password')
+        ->set('categoria_id','1')
         ->call('register');
 
     $response

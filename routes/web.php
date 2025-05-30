@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\Productos\Create;
+use App\Models\Producto;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
@@ -9,9 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', function () {
+    $productos = Producto::all();
+    return view('dashboard', compact('productos'));
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -30,6 +32,20 @@ Route::get('/categorias', function () {
 Route::get('/productos', function () {
     return view('productos');
 })->name('productos.index');
+
+Route::get('/roles', function () {
+    return view('roles');
+})->name('roles.index');
+
+Route::get('/usuarios', function () {
+    return view('usuarios');
+})->name('usuarios.index');
+
+Route::get('/carrito', function () {
+    return view('carrito');
+})->name('carrito.index');
+
+
 /* Route::get('/productos', Index::class)
     ->name('productos.index'); */
 

@@ -1,22 +1,26 @@
 <?php
 
-use App\Models\User;
+use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Volt;
 
 test('profile page is displayed', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = Usuario::factory()->create());
 
     $this->get('/settings/profile')->assertOk();
 });
 
 test('profile information can be updated', function () {
-    $user = User::factory()->create();
+    $user = Usuario::factory()->create();
 
     $this->actingAs($user);
 
     $response = Volt::test('settings.profile')
-        ->set('name', 'Test User')
+        ->set('nombre', 'Test User')
+        ->set('telefono', '00000000')
+        ->set('direccion', 'AV falsa')
         ->set('email', 'test@example.com')
+        ->set('categoria_id','1')
         ->call('updateProfileInformation');
 
     $response->assertHasNoErrors();
@@ -29,7 +33,7 @@ test('profile information can be updated', function () {
 });
 
 test('email verification status is unchanged when email address is unchanged', function () {
-    $user = User::factory()->create();
+    $user = Usuario::factory()->create();
 
     $this->actingAs($user);
 
@@ -44,7 +48,7 @@ test('email verification status is unchanged when email address is unchanged', f
 });
 
 test('user can delete their account', function () {
-    $user = User::factory()->create();
+    $user = Usuario::factory()->create();
 
     $this->actingAs($user);
 
@@ -57,11 +61,11 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     expect($user->fresh())->toBeNull();
-    expect(auth()->check())->toBeFalse();
+    expect(Auth::check())->toBeFalse();
 });
 
 test('correct password must be provided to delete account', function () {
-    $user = User::factory()->create();
+    $user = Usuario::factory()->create();
 
     $this->actingAs($user);
 

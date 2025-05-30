@@ -122,5 +122,9 @@ new class extends Component {
                 Cancelar
             </flux:button>
         </form>
+<<<<<<< HEAD
 </div>
 
+=======
+</div>
+>>>>>>> 7a742ac (subido de categoria dashboard)

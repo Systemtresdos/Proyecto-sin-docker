@@ -10,7 +10,7 @@
 
         <div class="flex justify-between items-center mb-4">
             <input type="text" wire:model.live="search" placeholder="Buscar usuarios..."
-                   class="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    class="shadow appearance-none border rounded w-1/3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             <button wire:click="createUser"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                 Crear Nuevo Usuario
@@ -24,31 +24,31 @@
                     <div class="mb-4">
                         <label for="nombre" class="block text-gray-700 text-sm font-bold mb-2">Nombre:</label>
                         <input type="text" id="nombre" wire:model="form.nombre"
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @error('form.nombre') <span class="text-red-500 text-xs italic">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="telefono" class="block text-gray-700 text-sm font-bold mb-2">Teléfono:</label>
                         <input type="text" id="telefono" wire:model="form.telefono"
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @error('form.telefono') <span class="text-red-500 text-xs italic">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="direccion" class="block text-gray-700 text-sm font-bold mb-2">Dirección:</label>
                         <input type="text" id="direccion" wire:model="form.direccion"
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @error('form.direccion') <span class="text-red-500 text-xs italic">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
                         <input type="email" id="email" wire:model="form.email"
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @error('form.email') <span class="text-red-500 text-xs italic">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Contraseña (dejar vacío para no cambiar):</label>
                         <input type="password" id="password" wire:model="form.password"
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         @error('form.password') <span class="text-red-500 text-xs italic">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">

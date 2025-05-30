@@ -1,4 +1,4 @@
-
+<div>    
     <div> 
         <h2 class="text-2xl font-bold mb-4">Gestión de Usuarios</h2>
 
@@ -142,3 +142,4 @@
             {{ $usuarios->links() }}
         </div>
     </div>
+</div>

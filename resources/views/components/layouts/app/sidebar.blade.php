@@ -108,7 +108,7 @@
                 <flux:navbar.item href="{{ route('dashboard') }}" icon="home" :current="request()->routeIs('dashboard')" wire:navigate>
                     {{ __('Dashboard') }}
                 </flux:navbar.item>
-                <flux:navbar.item href="#" icon="pizza">Menu</flux:navbar.item>
+                <flux:navbar.item href="#" icon="home">Menu</flux:navbar.item>
                 <flux:navbar.item href="#" icon="list-bullet">Pedidos</flux:navbar.item>
             </flux:navbar>
             <flux:spacer />

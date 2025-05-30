@@ -4,4 +4,3 @@
     <p class="mt-4 text-gray-600">Desde aquí puedes navegar a las diferentes secciones.</p>
     <livewire:user-management/>
     </x-layouts.app>
->>>>>>> 7a742ac (subido de categoria dashboard)

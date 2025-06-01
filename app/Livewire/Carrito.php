@@ -3,21 +3,27 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Producto;
 use Livewire\Attributes\On;
 
 class Carrito extends Component
 {
     public $carritoProductos = [];
+    public $mostrarModalPagoQr = false;
 
     public function mount()
     {
         $this->cargarProductos();
     }
     #[On('carritoActualizado')]
+    #[On('pagoQrCompletado')]
     public function cargarProductos()
     {
         $this->carritoProductos = session()->get('carrito', []);
+        if (request()->routeIs('livewire.message') && session()->has('pago_qr_completado_flag')) {
+             // Si el evento pagoQrCompletado fue el que disparó esto, y el flag está, cerramos modal
+            $this->mostrarModalPagoQr = false;
+            session()->forget('pago_qr_completado_flag'); // Limpiar flag
+        }
     }
     public function quitarProductos($producto_id)
     {
@@ -53,6 +59,21 @@ class Carrito extends Component
         });
     }
 
+    public function iniciarPagoConQr()
+    {
+        if (empty($this->carritoProductos)) {
+            // Opcional: mostrar un mensaje si el carrito está vacío
+            session()->flash('error_carrito', 'Tu carrito está vacío.');
+            return;
+        }
+        $this->mostrarModalPagoQr = true;
+    }
+
+    public function cerrarModalPagoQr()
+    {
+        $this->mostrarModalPagoQr = false;
+    }
+    
     public function render()
     {
         $totalCalculado = $this->calcularTotal();

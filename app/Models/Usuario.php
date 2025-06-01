@@ -63,7 +63,7 @@ class Usuario extends Authenticatable
         return $initials;
     }
     public function cliente(){
-        return $this->hasMany(Cliente::class);
+        return $this->hasMany(Cliente::class, 'usuario_id');
     }
     public function encargado(){
         return $this->hasMany(Encargado::class);

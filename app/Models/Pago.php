@@ -11,7 +11,8 @@ class Pago extends Model
 
     protected $fillable = [
         'estado',
-        'moto_total',
+        'monto_total',
         'pedido_id',
+        'token_confirmacion'
     ];
 }

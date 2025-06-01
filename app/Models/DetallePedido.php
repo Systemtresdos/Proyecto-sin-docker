@@ -13,7 +13,7 @@ class DetallePedido extends Model
         'cantidad',
         'descuento',
         'precio_unitario',
-        'sub_total',
+        'subtotal',
         'pedido_id',
         'producto_id',
     ];

@@ -19,15 +19,11 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')"
                         :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Inicio') }}
                     </flux:navlist.item>
-                    <flux:navlist.item href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:navlist.item>
-                    <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Gestion de productos
-                    </flux:navlist.item>
-                    <flux:navlist.item href="{{ route('categorias.index') }}" icon="salad">Gestion de categorias
-                    </flux:navlist.item>
-                    <flux:navlist.item href="{{route('roles.index')}}" icon="person-standing">Gestion de roles</flux:navlist.item>
-                    <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Gestion de usuarios</flux:navlist.item>
+
+                    <flux:navlist.item href="#" icon="list-bullet">Menu</flux:navlist.item>
+                    <flux:navlist.item href="#" icon="list-bullet">Pedidos</flux:navlist.item>
                 </flux:navlist.group>
-                {{-- <flux:navlist.group heading="Productos" expandable :expanded="false">
+                <flux:navlist.group heading="Productos" expandable :expanded="false">
                     <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Lista de productos
                     </flux:navlist.item>
                     <flux:navlist.item href="#" icon="plus">Nuevo producto</flux:navlist.item>
@@ -107,7 +103,8 @@
                 <flux:menu>
                     <flux:menu.group heading="Menu">
                         <flux:menu.item href="{{ route('dashboard') }}" icon="home">Inicio</flux:menu.item>
-                        <flux:menu.item href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:menu.item>
+                        <flux:menu.item icon="hamburger">Menu del dia</flux:menu.item>
+                        <flux:menu.item icon="list-bullet">Pedidos</flux:menu.item>
                     </flux:menu.group>
 
                     <flux:menu.group heading="Cuenta">
@@ -130,10 +127,16 @@
                 :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Inicio') }}
             </flux:navbar.item>
-            <flux:navbar.item class="hidden lg:flex" href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:navbar.item>
+            <flux:navbar.item class="hidden lg:flex" href="#" icon="hamburger">Menu</flux:navbar.item>
+            <flux:navbar.item class="hidden lg:flex" href="#" icon="list-bullet">Pedidos</flux:navbar.item>
         </flux:navbar>
         @endif
         <flux:spacer />
+        {{-- Buscador --}}
+        <flux:input.group class="max-w-xs">
+            <flux:input icon="magnifying-glass" placeholder="Buscar..." />
+            <flux:button>Buscar</flux:button>
+        </flux:input.group>
 
         {{-- Carrito de compras --}}
         @if (auth()->user()->rol_id == 2)

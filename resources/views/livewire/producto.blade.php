@@ -4,6 +4,7 @@ use Livewire\Volt\Component;
 use App\Models\Producto;
 use App\Models\Categoria;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 new class extends Component {
     use WithFileUploads;
@@ -15,39 +16,50 @@ new class extends Component {
     public $descripcion;
     public $codigo;
     public $precio_venta;
-    public $imagen;
+    public $imagen; // Para el nuevo archivo de imagen
+    public $current_imagen_path; // Para la ruta de la imagen existente
     public $categoria_id;
 
     public function mount()
     {
-        $this->actualizarProductos();   
+        $this->actualizarProductos();
     }
+
     public function actualizarProductos()
     {
         $this->productos = Producto::all();
         $this->categorias = Categoria::all();
     }
 
-    public function crear():void
+    public function crear(): void
     {
         $this->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string|max:1000',
-            'codigo' => 'required|string|max:100',
+            'codigo' => 'required|string|max:100|unique:productos,codigo,' . ($this->producto_id ? $this->producto_id : 'NULL'),
             'precio_venta' => 'required|numeric|min:0',
-            'imagen' => 'nullable|image|max:2048',
+            'imagen' => 'nullable|image|max:2048', // 2MB Max
             'categoria_id' => 'required|exists:categorias,id',
         ]);
 
-        if($this->producto_id){
+        $imagePath = $this->current_imagen_path; // Mantener la imagen existente por defecto
+
+        if ($this->imagen) {
+            if ($this->current_imagen_path) {
+                Storage::disk('public')->delete($this->current_imagen_path); // Eliminar imagen antigua
+            }
+            $imagePath = $this->imagen->store('productos', 'public');
+        }
+
+        if ($this->producto_id) {
             $producto = Producto::find($this->producto_id);
-            if($producto) {
+            if ($producto) {
                 $producto->update([
                     'nombre' => $this->nombre,
                     'descripcion' => $this->descripcion,
                     'codigo' => $this->codigo,
                     'precio_venta' => $this->precio_venta,
-                    'imagen' => $this->imagen ? $this->imagen->store('productos', 'public') : $producto->imagen,
+                    'imagen' => $imagePath,
                     'categoria_id' => $this->categoria_id,
                 ]);
             }
@@ -57,7 +69,7 @@ new class extends Component {
                 'descripcion' => $this->descripcion,
                 'codigo' => $this->codigo,
                 'precio_venta' => $this->precio_venta,
-                'imagen' => $this->imagen ? $this->imagen->store('productos', 'public') : null,
+                'imagen' => $imagePath,
                 'categoria_id' => $this->categoria_id,
             ]);
         }
@@ -65,37 +77,39 @@ new class extends Component {
         $this->actualizarProductos();
     }
 
-    public function editar($id):void
+    public function editar($id): void
     {
         $producto = Producto::find($id);
-        if($producto) {
+        if ($producto) {
             $this->producto_id = $producto->id;
             $this->nombre = $producto->nombre;
             $this->descripcion = $producto->descripcion;
             $this->codigo = $producto->codigo;
             $this->precio_venta = $producto->precio_venta;
-            $this->imagen = null; // No se carga la imagen al editar
+            $this->current_imagen_path = $producto->imagen; // Cargar la ruta de la imagen existente
+            $this->imagen = null; // Resetear el input de archivo
             $this->categoria_id = $producto->categoria_id;
         }
     }
-    public function eliminar($id):void
+
+    public function eliminar($id): void
     {
         $producto = Producto::find($id);
-        $producto->delete();
-        $this->actualizarProductos();
+        if ($producto) {
+            if ($producto->imagen) {
+                Storage::disk('public')->delete($producto->imagen); // Eliminar imagen del almacenamiento
+            }
+            $producto->delete();
+            $this->actualizarProductos();
+        }
     }
-    public function vaciarFormulario():void
-    {
-        $this->producto_id = null;
-        $this->nombre = '';
-        $this->descripcion = '';
-        $this->codigo = '';
-        $this->precio_venta = 0;
-        $this->imagen = null;
-        $this->categoria_id = null;
-    } 
 
-    public function render() : mixed
+    public function vaciarFormulario(): void
+    {
+        $this->reset(['producto_id', 'nombre', 'descripcion', 'codigo', 'precio_venta', 'imagen', 'current_imagen_path', 'categoria_id']);
+    }
+
+    public function render(): mixed
     {
         return view('livewire.producto', [
             'productos' => $this->productos,
@@ -166,10 +180,23 @@ new class extends Component {
                     @error('imagen') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
 
                     @if($imagen)
+<<<<<<< HEAD
                     <div class="mt-2">
                         <img src="{{ $imagen->temporaryUrl() }}" alt="Vista previa de la imagen" class="w-32 h-32 object-cover rounded">
                     </div>
                 @endif
+=======
+                        <div class="mt-4 flex items-center space-x-4">
+                            <span class="text-gray-700 dark:text-gray-300 text-sm">Vista previa de la nueva imagen:</span>
+                            <img src="{{ $imagen->temporaryUrl() }}" alt="Vista previa de la imagen" class="w-24 h-24 object-cover rounded shadow-md">
+                        </div>
+                    @elseif($current_imagen_path)
+                        <div class="mt-4 flex items-center space-x-4">
+                            <span class="text-gray-700 dark:text-gray-300 text-sm">Imagen actual:</span>
+                            <img src="{{ asset('storage/' . $current_imagen_path) }}" alt="Imagen actual del producto" class="w-24 h-24 object-cover rounded shadow-md">
+                        </div>
+                    @endif
+>>>>>>> fda29aed533c3144cb0564f5493f5380777cb7ed
                 </div>
 
                 <div>

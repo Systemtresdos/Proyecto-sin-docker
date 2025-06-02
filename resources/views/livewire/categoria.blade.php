@@ -4,7 +4,6 @@ use Livewire\Volt\Component;
 use App\Models\Categoria;
 
 new class extends Component {
-    //
     public $categoria_id;
     public $nombre;
     public $descripcion;
@@ -19,48 +18,50 @@ new class extends Component {
     {
         $this->categorias = Categoria::all();
     }
-    public function crear():void
+
+    public function crear(): void
     {
         $this->validate([
             'nombre' => ['required', 'string', 'max:255'],
             'descripcion' => ['nullable', 'string', 'max:500'],
         ]);
 
-        if($this->categoria_id) {
+        if ($this->categoria_id) {
             $categoria = Categoria::find($this->categoria_id);
-            if($categoria) {
+            if ($categoria) {
                 $categoria->update([
-                    'nombre' => $this->nombre,
-                    'descripcion' => $this->descripcion,
-            ]);
-        }
-            } else {
-                Categoria::create([
                     'nombre' => $this->nombre,
                     'descripcion' => $this->descripcion,
                 ]);
             }
+        } else {
+            Categoria::create([
+                'nombre' => $this->nombre,
+                'descripcion' => $this->descripcion,
+            ]);
+        }
         $this->vaciarFormulario();
         $this->actualizarCategorias();
     }
 
-    public function editar($id):void
+    public function editar($id): void
     {
         $categoria = Categoria::find($id);
-        if($categoria) {
+        if ($categoria) {
             $this->categoria_id = $categoria->id;
             $this->nombre = $categoria->nombre;
             $this->descripcion = $categoria->descripcion;
         }
     }
 
-    public function eliminar($id):void{
+    public function eliminar($id): void
+    {
         $categoria = Categoria::find($id);
         $categoria->delete();
         $this->actualizarCategorias();
     }
 
-    public function vaciarFormulario():void
+    public function vaciarFormulario(): void
     {
         $this->reset(['categoria_id', 'nombre', 'descripcion']);
     }

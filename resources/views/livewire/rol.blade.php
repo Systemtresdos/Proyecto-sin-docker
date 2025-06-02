@@ -18,48 +18,52 @@ new class extends Component {
     {
         $this->roles = Rol::all();
     }
-    public function crear():void
+
+    public function crear(): void
     {
         $this->validate([
-            'nombre' => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255', 'unique:roles,nombre,' . ($this->rol_id ? $this->rol_id : 'NULL')],
             'descripcion' => ['nullable', 'string', 'max:500'],
         ]);
 
-        if($this->rol_id) {
+        if ($this->rol_id) {
             $rol = Rol::find($this->rol_id);
-            if($rol) {
+            if ($rol) {
                 $rol->update([
-                    'nombre' => $this->nombre,
-                    'descripcion' => $this->descripcion,
-            ]);
-        }
-            } else {
-                Rol::create([
                     'nombre' => $this->nombre,
                     'descripcion' => $this->descripcion,
                 ]);
             }
+        } else {
+            Rol::create([
+                'nombre' => $this->nombre,
+                'descripcion' => $this->descripcion,
+            ]);
+        }
         $this->vaciarFormulario();
         $this->actualizarRoles();
     }
 
-    public function editar($id):void
+    public function editar($id): void
     {
         $rol = Rol::find($id);
-        if($rol) {
+        if ($rol) {
             $this->rol_id = $rol->id;
             $this->nombre = $rol->nombre;
             $this->descripcion = $rol->descripcion;
         }
     }
 
-    public function eliminar($id):void{
+    public function eliminar($id): void
+    {
         $rol = Rol::find($id);
-        $rol->delete();
-        $this->actualizarRoles();
+        if ($rol) {
+            $rol->delete();
+            $this->actualizarRoles();
+        }
     }
 
-    public function vaciarFormulario():void
+    public function vaciarFormulario(): void
     {
         $this->reset(['rol_id', 'nombre', 'descripcion']);
     }

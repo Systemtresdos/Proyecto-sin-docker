@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
             $table->enum('estado', ['Pagado', 'Pendiente'])->default('Pendiente');
-            $table->enum('metodo_pago', ['Efectivo', 'Tarjeta de Crédito', 'Qr'])->default('Efectivo');
             $table->string('token_confirmacion', 60)->nullable()->unique();
             $table->decimal('monto_total', 10, 2);
             $table->foreignId('pedido_id')->nullable()->constrained('pedidos')->onDelete('set null');

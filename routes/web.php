@@ -8,6 +8,7 @@ use Livewire\Volt\Volt;
 use App\Livewire\UserManagement; // Componente Livewire para usuarios
 use App\Livewire\RoleManagement; // Componente Livewire para roles
 use App\Http\Controllers\PagoQrController; // Controlador para pagos QR
+use App\Models\Rol;
 
 // Ruta principal que carga la vista 'dashboard.blade.php'
 Route::get('/', function () {
@@ -52,9 +53,6 @@ Route::middleware(['auth'])->group(function () {
     
     // Ruta para gestión de usuarios
     Route::get('/users', UserManagement::class)->name('users.index');
-    
-    // Ruta para gestión de roles
-    Route::get('/roles', RoleManagement::class)->name('roles.index');
     
     Route::get('/pago-qr/confirmar/{token}', [PagoQrController::class, 'mostrarPaginaConfirmacion'])->name('pago.qr.confirmar');
     Route::post('/pago-qr/procesar-confirmacion/{token}', [PagoQrController::class, 'procesarConfirmacion'])->name('pago.qr.procesar');

@@ -10,7 +10,7 @@ class GestionPedidos extends Component
     public function cambiarEstado($pedidoId, $nuevoEstado)
     {
         $pedido = Pedido::find($pedidoId);
-        if ($pedido && in_array($nuevoEstado, ['Preparando', 'Entregado'])) {
+        if ($pedido && in_array($nuevoEstado, ['Preparando','Listo', 'Entregado'])) {
             $pedido->estado = $nuevoEstado;
             $pedido->save();
         }
@@ -19,7 +19,7 @@ class GestionPedidos extends Component
     public function render()
     {
         $pedidos = Pedido::where('estado', '!=', 'Entregado')
-            ->orderByRaw("FIELD(estado, 'Pendiente', 'Confirmado', 'Preparando')")
+            ->orderByRaw("FIELD(estado, 'Pendiente', 'Confirmado', 'Listo' 'Preparando')")
             ->orderBy('created_at', 'asc')
             ->get();
 

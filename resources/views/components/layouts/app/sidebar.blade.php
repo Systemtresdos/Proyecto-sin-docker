@@ -20,8 +20,14 @@
                         :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Inicio') }}
                     </flux:navlist.item>
                     <flux:navlist.item href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:navlist.item>
+                    <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Gestion de productos
+                    </flux:navlist.item>
+                    <flux:navlist.item href="{{ route('categorias.index') }}" icon="salad">Gestion de categorias
+                    </flux:navlist.item>
+                    <flux:navlist.item href="{{route('roles.index')}}" icon="person-standing">Gestion de roles</flux:navlist.item>
+                    <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Gestion de usuarios</flux:navlist.item>
                 </flux:navlist.group>
-                <flux:navlist.group heading="Productos" expandable :expanded="false">
+                {{-- <flux:navlist.group heading="Productos" expandable :expanded="false">
                     <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Lista de productos
                     </flux:navlist.item>
                     <flux:navlist.item href="#" icon="plus">Nuevo producto</flux:navlist.item>
@@ -38,7 +44,7 @@
                 <flux:navlist.group heading="Usuarios" expandable :expanded="false">
                     <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Lista de usuarios</flux:navlist.item>
                     <flux:navlist.item href="#" icon="user-plus">Nuevo usuario</flux:navlist.item>
-                </flux:navlist.group>
+                </flux:navlist.group> --}}
             </flux:navlist>
 
             <flux:spacer />

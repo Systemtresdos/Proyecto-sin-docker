@@ -20,9 +20,13 @@ class PagoConQr extends Component
     public $pedidoGuardado;
     public $pagoGuardado;
     public $urlConfirmacion;
-
     public $carritoProductos;
     public $total;
+
+    public $tipo_entrega = '';
+    public $direccion_entrega = '';
+    public $notas_adicionales = '';
+    public $metodo_pago = '';
 
     public function mount($carritoProductos, $total)
     {
@@ -32,17 +36,15 @@ class PagoConQr extends Component
 
     public function generarPedidoYQrConGuardado()
     {
-        $user = Auth::user();
+        $usuario = Auth::user();
 
-        if (!$user) {
+        if (!$usuario) {
             session()->flash('error_pago_qr', 'Debe iniciar sesión para procesar el pago.');
             return;
         }
 
+        $clienteInstance = $usuario->cliente;
 
-        $clienteInstance = $user->cliente;
-
-        
         if ($clienteInstance instanceof EloquentCollection) {
             $cliente = $clienteInstance->first();
         } else {
@@ -62,11 +64,12 @@ class PagoConQr extends Component
         DB::beginTransaction();
         try {
             $this->pedidoGuardado = Pedido::create([
-                'nro_pedido' => 'PED-' . now()->format('YmdHis') . '-' . $cliente->id,
+                'nro_pedido' => 'PED-' . now()->format('Ymd') . '-' . $cliente->id,
                 'estado' => 'Pendiente',
-                'tipo_entrega' => $cliente->preferencia_entrega ?? 'Domicilio',
-                'direccion_entrega' => $cliente->direccion_predeterminada ?? $cliente->direccion ?? 'No especificada',
-                'notas_adicionales' => '',
+                'tipo_entrega' => $this->tipo_entrega ?? 'Domicilio',
+                'direccion_entrega' => $cliente->usuario->direccion ?? $this->direccion_entrega ?? 'No especificada',
+                'notas_adicionales' => $this->notas_adicionales ?? '',
+                'metodo_pago' => $this->metodo_pago ?? 'Qr',
                 'total' => $this->total,
                 'cliente_id' => $cliente->id,
             ]);
@@ -112,6 +115,11 @@ class PagoConQr extends Component
 
     public function render()
     {
+        if($this->tipo_entrega === 'Domicilio') {
+            $this->direccion_entrega = $this->direccion_entrega ?: Auth::user()->cliente->usuario->direccion ?? '';
+        } elseif($this->tipo_entrega === 'Retiro_local') {
+            $this->direccion_entrega = 'Retiro en local';
+        } 
         return view('livewire.pago-con-qr', [
             'pedidoParaVista' => $this->pedidoGuardado, 
             'pagoParaVista' => $this->pagoGuardado,

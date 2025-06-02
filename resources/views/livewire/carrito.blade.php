@@ -57,10 +57,10 @@
         </div>
 
         <div class="mt-6 text-right">
-            {{-- Botón para iniciar el pago con QR --}}
+            {{-- Botón para iniciar --}}
             <button wire:click="iniciarPagoConQr"
                     class="text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-6 py-3 text-center transition-colors duration-200">
-                Proceder al Pago con QR
+                Detalles del Pedido
             </button>
         </div>
     @endif
@@ -70,7 +70,7 @@
         <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4">
             <div class="bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-xl w-full max-w-lg max-h-full overflow-y-auto">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-semibold dark:text-white">Procesar Pago con QR</h3>
+                    <h3 class="text-xl font-semibold dark:text-white">Procesar Pago</h3>
                     <button wire:click="cerrarModalPagoQr" class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">&times;</button>
                 </div>
                 {{-- Aquí se cargará el componente PagoConQr --}}

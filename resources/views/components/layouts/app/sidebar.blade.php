@@ -38,7 +38,7 @@
                     <flux:navlist.item href="#" icon="plus">Nueva rol</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Usuarios" expandable :expanded="false">
-                    <flux:navlist.item href="#" icon="users">Lista de usuarios</flux:navlist.item>
+                    <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Lista de usuarios</flux:navlist.item>
                     <flux:navlist.item href="#" icon="user-plus">Nuevo usuario</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>

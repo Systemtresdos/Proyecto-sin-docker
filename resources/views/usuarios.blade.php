@@ -1,5 +1,5 @@
 <x-layouts.app title="Usuarios" :breadcrumbs="['Usuarios']">
     <div class="p-4">
-        <livewire:usuario />
+        <livewire:user-management />
     </div>
 </x-layouts.app>

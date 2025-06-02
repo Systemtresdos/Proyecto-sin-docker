@@ -15,8 +15,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/dashboard', function () {
-    $productos = Producto::all();
-    return view('dashboard', compact('productos'));
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -46,6 +45,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/carrito', function () {
         return view('carrito');
     })->name('carrito.index');
+
+    Route::get('/pedidos', function () {
+        return view('pedidos');
+    })->name('pedidos.index');
     
     // Ruta para gestión de usuarios
     Route::get('/users', UserManagement::class)->name('users.index');

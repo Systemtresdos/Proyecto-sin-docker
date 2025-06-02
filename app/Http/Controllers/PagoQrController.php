@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Models\Pago; // Importar el modelo Pago
-use App\Models\Pedido; // Importar el modelo Pedido
+use App\Models\Pago;
+use App\Models\Pedido;
 
 class PagoQrController extends Controller
 {
@@ -65,7 +65,7 @@ class PagoQrController extends Controller
         $pago->estado = 'Pagado';
         $pago->save();
 
-        $pedido->estado = 'Pagado';
+        $pedido->estado = 'Confirmado';
         $pedido->save();
 
         Session::forget('carrito');

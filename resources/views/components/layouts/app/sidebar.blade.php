@@ -19,9 +19,8 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')"
                         :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}
                     </flux:navlist.item>
-
                     <flux:navlist.item href="#" icon="list-bullet">Menu</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="list-bullet">Pedidos</flux:navlist.item>
+                    <flux:navlist.item href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Productos" expandable :expanded="false">
                     <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Lista de productos
@@ -38,24 +37,12 @@
                     <flux:navlist.item href="#" icon="plus">Nueva rol</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Usuarios" expandable :expanded="false">
-                    <flux:navlist.item href="#" icon="users">Lista de usuarios</flux:navlist.item>
+                    <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Lista de usuarios</flux:navlist.item>
                     <flux:navlist.item href="#" icon="user-plus">Nuevo usuario</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
-
-            <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit"
-                    target="_blank">
-                    {{ __('Repository') }}
-                </flux:navlist.item>
-
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire"
-                    target="_blank">
-                    {{ __('Documentation') }}
-                </flux:navlist.item>
-            </flux:navlist>
 
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
@@ -115,8 +102,7 @@
                 <flux:menu>
                     <flux:menu.group heading="Menu">
                         <flux:menu.item href="{{ route('dashboard') }}" icon="home">Inicio</flux:menu.item>
-                        <flux:menu.item icon="hamburger">Menu del dia</flux:menu.item>
-                        <flux:menu.item icon="list-bullet">Pedidos</flux:menu.item>
+                        <flux:menu.item href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:menu.item>
                     </flux:menu.group>
 
                     <flux:menu.group heading="Cuenta">
@@ -139,16 +125,10 @@
                 :current="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Inicio') }}
             </flux:navbar.item>
-            <flux:navbar.item class="hidden lg:flex" href="#" icon="hamburger">Menu</flux:navbar.item>
-            <flux:navbar.item class="hidden lg:flex" href="#" icon="list-bullet">Pedidos</flux:navbar.item>
+            <flux:navbar.item class="hidden lg:flex" href="{{route('pedidos.index')}}" icon="list-bullet">Pedidos</flux:navbar.item>
         </flux:navbar>
         @endif
         <flux:spacer />
-        {{-- Buscador --}}
-        <flux:input.group class="max-w-xs">
-            <flux:input icon="magnifying-glass" placeholder="Buscar..." />
-            <flux:button>Buscar</flux:button>
-        </flux:input.group>
 
         {{-- Carrito de compras --}}
         @if (auth()->user()->rol_id == 2)
@@ -160,7 +140,6 @@
 
             <flux:menu class="w-[220px]">
                 <flux:menu.item href="{{ route('carrito.index') }}" icon="shopping-cart">Ver carrito</flux:menu.item>
-                <flux:menu.item href="#" icon="credit-card">Pagar</flux:menu.item>
             </flux:menu>
         </flux:dropdown>
         @endif

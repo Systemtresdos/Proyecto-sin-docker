@@ -23,7 +23,7 @@
         </div>
     @elseif($mostrarDetalles)
         <div class="mb-4">
-            <h4 class="text-lg font-medium mb-2 dark:text-white">Resumen del Pedido (Simulado)</h4>
+            <h4 class="text-lg font-medium mb-2 dark:text-white">Resumen del Pedido</h4>
             <p class="dark:text-gray-300"><strong>Total a Pagar:</strong> {{ number_format($total, 2) }} Bs</p>
             <ul class="list-disc list-inside mt-2 dark:text-gray-300">
                 @foreach ($carritoProductos as $item)

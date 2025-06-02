@@ -23,7 +23,7 @@ class UsuarioSeeder extends Seeder
             'rol_id' => 1,
         ]);
         Encargado::create([
-            'usuario_id' => 2,
+            'usuario_id' => 1,
             'dni' => '000000000'
         ]);
     }

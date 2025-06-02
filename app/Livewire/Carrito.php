@@ -20,9 +20,8 @@ class Carrito extends Component
     {
         $this->carritoProductos = session()->get('carrito', []);
         if (request()->routeIs('livewire.message') && session()->has('pago_qr_completado_flag')) {
-             // Si el evento pagoQrCompletado fue el que disparó esto, y el flag está, cerramos modal
             $this->mostrarModalPagoQr = false;
-            session()->forget('pago_qr_completado_flag'); // Limpiar flag
+            session()->forget('pago_qr_completado_flag');
         }
     }
     public function quitarProductos($producto_id)
@@ -62,7 +61,6 @@ class Carrito extends Component
     public function iniciarPagoConQr()
     {
         if (empty($this->carritoProductos)) {
-            // Opcional: mostrar un mensaje si el carrito está vacío
             session()->flash('error_carrito', 'Tu carrito está vacío.');
             return;
         }

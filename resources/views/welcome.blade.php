@@ -31,16 +31,6 @@
                         <span class="text-[#1b1b18] dark:text-white">Punto</span>Fast
                     </a>
                 </div>
-                
-                <!-- Menú de navegación -->
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="#" class="text-[#1b1b18] dark:text-[#EDEDEC] hover:text-[#E63946] transition">Inicio</a>
-                    <a href="#" class="text-[#1b1b18] dark:text-[#EDEDEC] hover:text-[#E63946] transition">Menú</a>
-                    <a href="#" class="text-[#1b1b18] dark:text-[#EDEDEC] hover:text-[#E63946] transition">Promociones</a>
-                    <a href="#" class="text-[#1b1b18] dark:text-[#EDEDEC] hover:text-[#E63946] transition">Sucursales</a>
-                    <a href="#" class="text-[#1b1b18] dark:text-[#EDEDEC] hover:text-[#E63946] transition">Contacto</a>
-                </nav>
-                
                 <!-- Botones de autenticación -->
                 <div class="flex items-center space-x-3">
                     @auth
@@ -61,152 +51,130 @@
             </div>
         </header>
     
-        <!-- Hero Section -->
-        <section class="relative bg-[#E63946] text-white">
-            <div class="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4">La mejor comida rápida en tu ciudad</h1>
-                    <p class="text-xl mb-8">Hamburguesas, papas fritas, alitas y más. Preparados al instante con ingredientes frescos.</p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#" class="px-6 py-3 bg-white text-[#E63946] font-medium rounded-md hover:bg-gray-100 transition text-center">
-                            Ver Menú
+        <section class="relative bg-gradient-to-r from-[#E63946] to-[#C1121F] text-white">
+            <div class="container mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row items-center gap-6">
+                <div class="md:w-1/2 mb-6 md:mb-0">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-3 leading-tight">Sabores que despiertan pasión</h1>
+                    <p class="text-lg mb-6">Desde 2023 sirviendo la mejor comida rápida con ingredientes frescos y recetas tradicionales.</p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="#menu" class="px-5 py-2.5 bg-white text-[#E63946] font-medium rounded-md hover:bg-gray-100 transition text-center">
+                            Productos Destacados
                         </a>
-                        <a href="#" class="px-6 py-3 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-[#E63946] transition text-center">
-                            Pedir Ahora
-                        </a>
+                        @auth
+                            <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-[#E63946] transition text-center">
+                                Hacer Pedido
+                            </a>
+                        @else
+                            <a href="{{ route('login') }}" class="px-5 py-2.5 border-2 border-white text-white font-medium rounded-md hover:bg-white hover:text-[#E63946] transition text-center">
+                                Iniciar Sesión
+                            </a>
+                        @endauth
                     </div>
                 </div>
                 <div class="md:w-1/2 flex justify-center">
-                    <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" 
+                    <img src="/Logo.png" 
                          alt="Comida rápida de PuntoFast" 
-                         class="rounded-lg shadow-2xl max-w-md w-full h-auto">
+                         class="rounded-lg shadow-xl max-w-xs w-full h-auto object-contain transform hover:scale-105 transition duration-300">
                 </div>
             </div>
         </section>
     
-        <!-- Destacados -->
+        <!-- Nuestra Historia -->
         <section class="py-16 bg-white dark:bg-[#0a0a0a]">
             <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center mb-12 text-[#1b1b18] dark:text-white">Nuestros Platos Destacados</h2>
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-bold mb-6 text-[#1b1b18] dark:text-white">Nuestra Historia</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-4">
+                            PuntoFast nació de la pasión por la comida rápida de calidad. Lo que comenzó como un pequeño puesto en el centro de la ciudad, hoy es un referente de sabores auténticos y servicio rápido.
+                        </p>
+                        <p class="text-lg text-gray-600 dark:text-gray-300">
+                            Nuestro secreto está en la selección cuidadosa de ingredientes y en mantener las recetas tradicionales que han hecho felices a nuestros clientes por más de una década.
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" 
+                             alt="Restaurante PuntoFast" 
+                             class="rounded-lg h-48 w-full object-cover">
+                        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
+                             alt="Ingredientes frescos" 
+                             class="rounded-lg h-48 w-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+        <!-- Menú Destacado -->
+        <section id="menu" class="py-16 bg-gray-100 dark:bg-[#1a1a1a]">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 text-white dark:text-black">Nuestros Platos Destacados</h2>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Item 1 -->
-                    <div class="bg-[#FDFDFC] dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80" 
-                             alt="Hamburguesa Clásica" 
-                             class="w-full h-48 object-cover">
+                    <!-- Productos dinámicos desde la base de datos -->
+                    @foreach($productos->take(3) as $producto)
+                    <div class="bg-[#FDFDFC] dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition transform hover:-translate-y-2">
+                        <div class="relative">
+                            <img src="{{ asset('storage/' . $producto->imagen) }}" 
+                                 alt="{{ $producto->nombre }}" 
+                                 class="w-full h-48 object-cover">
+                        </div>
                         <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-[#1b1b18] dark:text-white">Hamburguesa Clásica</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">Carne 100% res, queso, lechuga, tomate y nuestra salsa especial.</p>
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold text-[#1b1b18] dark:text-white">{{ $producto->nombre }}</h3>
+                                <div class="flex items-center">
+                                    <span class="text-yellow-400 mr-1">★</span>
+                                    <span class="text-gray-600 dark:text-gray-300">{{ $producto->calificacion }}</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">{{ $producto->descripcion }}</p>
                             <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-[#E63946]">45 Bs</span>
-                                <button class="px-4 py-2 bg-[#E63946] text-white rounded-md hover:bg-[#C1121F] transition">
-                                    Añadir al carrito
-                                </button>
+                                <div>
+                                    @if($producto->promocion)
+                                    <span class="text-lg line-through text-gray-400 mr-2">{{ $producto->precio_original }} Bs</span>
+                                    @endif
+                                    <span class="text-lg font-bold text-[#E63946]">{{ $producto->precio_venta }} Bs</span>
+                                </div>
+                                @auth
+                                    <button class="px-4 py-2 bg-[#E63946] text-white rounded-md hover:bg-[#C1121F] transition flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                        Añadir
+                                    </button>
+                                @else
+                                    <a href="{{ route('login') }}" class="px-4 py-2 border border-[#E63946] text-[#E63946] rounded-md hover:bg-[#E63946] hover:text-white transition flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                        </svg>
+                                        Iniciar sesión
+                                    </a>
+                                @endauth
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Item 2 -->
-                    <div class="bg-[#FDFDFC] dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" 
-                             alt="Papas Fritas" 
-                             class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-[#1b1b18] dark:text-white">Papas Fritas Supreme</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">Crujientes papas con queso derretido, tocino y salsa ranch.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-[#E63946]">28 Bs</span>
-                                <button class="px-4 py-2 bg-[#E63946] text-white rounded-md hover:bg-[#C1121F] transition">
-                                    Añadir al carrito
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Item 3 -->
-                    <div class="bg-[#FDFDFC] dark:bg-[#1a1a1a] rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                        <img src="https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1472&q=80" 
-                             alt="Alitas Picantes" 
-                             class="w-full h-48 object-cover">
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold mb-2 text-[#1b1b18] dark:text-white">Alitas BBQ</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">12 piezas de alitas bañadas en nuestra salsa BBQ casera.</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-[#E63946]">55 Bs</span>
-                                <button class="px-4 py-2 bg-[#E63946] text-white rounded-md hover:bg-[#C1121F] transition">
-                                    Añadir al carrito
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-12">
-                    <a href="#" class="inline-block px-8 py-3 bg-[#E63946] text-white font-medium rounded-md hover:bg-[#C1121F] transition">
-                        Ver Menú Completo
-                    </a>
+                    @endforeach
                 </div>
             </div>
         </section>
-    
-        <!-- Promociones -->
-        <section class="py-16 bg-gray-200 dark:bg-[#1a1a1a]">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-bold text-center mb-12 text-[#1b1b18] dark:text-white">Promociones Especiales</h2>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Promo 1 -->
-                    <div class="bg-[#E63946] text-white rounded-lg overflow-hidden shadow-xl">
-                        <div class="p-8">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <span class="inline-block px-3 py-1 bg-white text-[#E63946] rounded-full text-sm font-medium mb-4">50% OFF</span>
-                                    <h3 class="text-2xl font-bold mb-2">Combo Familiar</h3>
-                                    <p class="mb-4">2 hamburguesas clásicas, 1 hamburguesa para niños, papas grandes y 3 bebidas.</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xl line-through opacity-70">120 Bs</span>
-                                    <span class="text-3xl font-bold block">60 Bs</span>
-                                </div>
-                            </div>
-                            <button class="w-full mt-4 px-6 py-3 bg-white text-[#E63946] font-medium rounded-md hover:bg-gray-100 transition">
-                                Ordenar Ahora
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- Promo 2 -->
-                    <div class="bg-[#1b1b18] text-white rounded-lg overflow-hidden shadow-xl">
-                        <div class="p-8">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <span class="inline-block px-3 py-1 bg-[#E63946] text-white rounded-full text-sm font-medium mb-4">2x1</span>
-                                    <h3 class="text-2xl font-bold mb-2">Martes de Alitas</h3>
-                                    <p class="mb-4">Todos los martes lleva 24 alitas por el precio de 12. Elige entre BBQ, Picantes o Miel Mostaza.</p>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-xl line-through opacity-70">110 Bs</span>
-                                    <span class="text-3xl font-bold block">55 Bs</span>
-                                </div>
-                            </div>
-                            <button class="w-full mt-4 px-6 py-3 bg-[#E63946] text-white font-medium rounded-md hover:bg-[#C1121F] transition">
-                                Ordenar Ahora
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    
         <!-- Footer -->
-        <footer class="bg-[#1b1b18] text-white py-12">
+        <footer class="bg-[#1b1b18] text-white py-8">
             <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div>
-                        <h3 class="text-2xl font-bold mb-4 text-[#E63946]">PuntoFast</h3>
-                        <p class="mb-4">La mejor comida rápida preparada al instante con ingredientes frescos y de calidad.</p>
-                        <div class="flex space-x-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    
+                    <div class="text-center">
+                        <h4 class="text-lg font-bold mb-3">Horario</h4>
+                        <ul class="space-y-1 text-sm">
+                            <li>Lunes a Viernes: 10:00 - 22:00</li>
+                            <li>Sábados: 11:00 - 23:00</li>
+                            <li>Domingos: 11:00 - 21:00</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <h3 class="text-xl font-bold mb-3 text-[#E63946]">PuntoFast</h3>
+                        <p class="mb-4 text-sm">La mejor comida rápida preparada al instante con ingredientes frescos y de calidad.</p>
+                        <div class="flex justify-center md:justify-start space-x-4">
                             <a href="#" class="text-white hover:text-[#E63946] transition">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
@@ -219,29 +187,9 @@
                         </div>
                     </div>
                     
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Enlaces Rápidos</h4>
-                        <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-[#E63946] transition">Inicio</a></li>
-                            <li><a href="#" class="hover:text-[#E63946] transition">Menú</a></li>
-                            <li><a href="#" class="hover:text-[#E63946] transition">Promociones</a></li>
-                            <li><a href="#" class="hover:text-[#E63946] transition">Sucursales</a></li>
-                            <li><a href="#" class="hover:text-[#E63946] transition">Contacto</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Horario</h4>
-                        <ul class="space-y-2">
-                            <li>Lunes a Viernes: 10:00 - 22:00</li>
-                            <li>Sábados: 11:00 - 23:00</li>
-                            <li>Domingos: 11:00 - 21:00</li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h4 class="text-lg font-bold mb-4">Contacto</h4>
-                        <ul class="space-y-2">
+                    <div class="text-center md:text-right">
+                        <h4 class="text-lg font-bold mb-3">Contacto</h4>
+                        <ul class="space-y-1 text-sm">
                             <li>Av. Principal #123</li>
                             <li>Teléfono: 76543210</li>
                             <li>Email: info@puntofast.com</li>
@@ -249,7 +197,7 @@
                     </div>
                 </div>
                 
-                <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <div class="border-t border-gray-700 mt-6 pt-6 text-center text-sm">
                     <p>&copy; 2023 PuntoFast. Todos los derechos reservados.</p>
                 </div>
             </div>

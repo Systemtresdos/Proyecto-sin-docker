@@ -16,11 +16,11 @@ return new class extends Migration
             $table->string('nro_pedido');
             $table->enum('estado', ['Pendiente', 'Confirmado', 'Preparando','Listo', 'Entregado'])->default('Pendiente');
             $table->enum('metodo_pago', ['Efectivo', 'Tarjeta de Crédito', 'Qr'])->default('Efectivo');
-            $table->enum('tipo_entrega', ['Domicilio', 'Retiro_local'])->default('Domicilio');
+            $table->enum('tipo_entrega', ['Domicilio', 'Retiro_local'])->default('Retiro_local');
             $table->string('direccion_entrega');
             $table->string('notas_adicionales')->nullable();
             $table->decimal('total', 10, 2);
-            $table->foreignId('cliente_id')->constrained('clientes')->onDelete('cascade');
+            $table->foreignId('cliente_id')->nullable()->constrained('clientes')->onDelete('set null');
             $table->timestamps();
         });
     }

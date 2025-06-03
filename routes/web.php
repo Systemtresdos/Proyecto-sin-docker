@@ -12,7 +12,8 @@ use App\Models\Rol;
 
 // Ruta principal que carga la vista 'dashboard.blade.php'
 Route::get('/', function () {
-    return view('welcome');
+    $productos = Producto::all();
+    return view('welcome', compact('productos'));
 })->name('home');
 
 Route::get('/dashboard', function () {

@@ -136,7 +136,6 @@
         <flux:spacer />
 
         {{-- Carrito de compras --}}
-        @if (auth()->user()->rol_id == 2)
         <flux:dropdown position="bottom" align="end">
             <flux:button variant="ghost" class="relative">
                 <flux:icon variant="solid" name="shopping-cart" class="text-red-500 dark:text-amber-300" />
@@ -147,7 +146,6 @@
                 <flux:menu.item href="{{ route('carrito.index') }}" icon="shopping-cart">Ver carrito</flux:menu.item>
             </flux:menu>
         </flux:dropdown>
-        @endif
 
         <flux:dropdown position="bottom" align="end" class="ml-4 hidden lg:flex">
             <flux:profile :name="auth()->user()->nombre" :initials="auth()->user()->initials()"

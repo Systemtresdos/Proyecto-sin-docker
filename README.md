@@ -74,6 +74,5 @@ Sigue estos pasos para poner el proyecto en marcha en tu entorno local con XAMPP
     ```
     Ahora deberías poder acceder a la aplicación en `http://127.0.0.1:8000` en tu navegador.
 
-## Capturas de Pantalla
 
-Aquí puedes ver algunas vistas clave de la aplicación:
+

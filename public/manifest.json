@@ -1,0 +1,17 @@
+{
+    "name": "Sistema de Pedidos",
+    "short_name": "Pedidos",
+    "start_url": "/",
+    "background_color": "#ffffff",
+    "description": "Sistema de gestión de pedidos y ventas",
+    "display": "standalone",
+    "theme_color": "#dc2626",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

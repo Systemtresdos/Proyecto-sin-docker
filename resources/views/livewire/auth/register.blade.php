@@ -50,11 +50,6 @@ new #[Layout('components.layouts.auth')] class extends Component {
 ?>
 
 <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-8">
-    <!-- Logo PuntoFast -->
-    <div class="flex justify-center mb-6">
-        <x-app-logo-icon/>
-    </div>
-
     <div class="flex flex-col gap-6">
         <div class="text-center">
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Regístrate</h1>

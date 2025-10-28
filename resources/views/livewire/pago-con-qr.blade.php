@@ -1,5 +1,4 @@
 <div class="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden p-6">
-    <!-- Logo PuntoFast -->
     <div class="flex justify-center mb-4">
         <div class="text-xl font-bold">
             <span class="text-gray-800 dark:text-white">Punto</span>
@@ -7,7 +6,6 @@
         </div>
     </div>
 
-    <!-- Mensajes de error/success -->
     @if (session()->has('error_pago_qr'))
         <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4 rounded" role="alert">
             <p class="text-red-700">{{ session('error_pago_qr') }}</p>
@@ -21,32 +19,6 @@
         </div>
     @endif
 
-    <!-- Sección de QR -->
-    @if ($codigoQrSvg)
-        <div class="text-center py-4">
-            <h4 class="text-lg font-medium mb-2 dark:text-white">Escanea este QR con tu móvil</h4>
-            
-            <div class="bg-white p-4 rounded-lg inline-block shadow-md">
-                <p class="text-sm text-gray-600 mb-1">Pedido Nro: {{ $pedidoParaVista->nro_pedido ?? 'N/A' }}</p>
-                <p class="text-lg font-bold text-[#E63946] mb-3">{{ number_format($total, 2) }} Bs</p>
-                
-                <div class="flex justify-center my-4">
-                    {!! $codigoQrSvg !!}
-                </div>
-                
-                <p class="text-xs text-gray-500 mt-2 max-w-xs mx-auto">
-                    El QR contiene la URL: <br> 
-                    <span class="break-all text-gray-700">{{ $urlConfirmacion }}</span>
-                </p>
-            </div>
-            
-            <p class="mt-4 text-sm text-gray-700 dark:text-gray-300">
-                Al escanear, serás redirigido a una página para confirmar el pago.
-            </p>
-        </div>
-    @endif
-
-    <!-- Sección de detalles del pedido -->
     @if ($mostrarDetalles)
         <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
             <h4 class="text-lg font-medium mb-3 dark:text-white">Resumen del Pedido</h4>
@@ -56,7 +28,7 @@
                     @foreach ($carritoProductos as $item)
                         <li class="flex justify-between text-gray-700 dark:text-gray-300">
                             <span>{{ $item['nombre'] }} (x{{ $item['cantidad'] }})</span>
-                            <span>{{ number_format($item['precio_venta'] * $item['cantidad'], 2) }} Bs</span>
+                            <span>{{ number_format(($item['precio_venta'] ?? $item['precio']) * $item['cantidad'], 2) }} Bs</span>
                         </li>
                     @endforeach
                 </ul>
@@ -69,34 +41,136 @@
                 </div>
             </div>
             
-            <!-- Opciones de entrega -->
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Entrega del pedido
-                </label>
-                <flux:select wire:model.live="tipo_entrega" placeholder="Entrega del pedido" class="mt-2 w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300">
-                <flux:select.option value="Domicilio">Domicilio</flux:select.option>
-                <flux:select.option value="Retiro_local">Retiro en el local</flux:select.option>
-            </flux:select>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Direccion de entrega
-            </label>
-            <flux:input wire:key="direccion_{{ $tipo_entrega }}" placeholder="Direccion de entrega"
-                        wire:model="direccion_entrega" value=""/>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Notas adicionales
+                @if(Auth::check() && Auth::user()->rol_id == 1)
+                    <div class="mb-3 p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Entrega:
+                            <span class="font-normal">Retiro en local (Automático)</span>
+                        </p>
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">Dirección de Entrega:
+                            <span class="font-normal">Pedido en local (Automático)</span>
+                        </p>
+                    </div>
+
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                        Notas adicionales (Opcional)
+                    </label>
+                    <flux:input placeholder="Notas adicionales para el pedido"
+                                wire:model.defer="notas_adicionales" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300" />
+
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                        Método de pago <span class="text-red-500">*</span>
+                    </label>
+                    <flux:select wire:model.defer="metodo_pago" placeholder="Seleccione un método de pago" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300">
+                        <flux:select.option value="Efectivo">Efectivo</flux:select.option>
+                        <flux:select.option value="Qr">Qr</flux:select.option>
+                    </flux:select>
+
+                @else
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Entrega del pedido <span class="text-red-500">*</span>
+                    </label>
+                    <flux:select wire:model.live="tipo_entrega" placeholder="Seleccione tipo de entrega" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300">
+                        <flux:select.option value="Domicilio">Domicilio</flux:select.option>
+                        <flux:select.option value="Retiro_local">Retiro en el local</flux:select.option>
+                    </flux:select>
+
+                    @if($tipo_entrega === 'Domicilio')
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                            Dirección de entrega <span class="text-red-500">*</span>
                         </label>
-            <flux:input placeholder="Notas adicionales"
-                        wire:model="notas_adicionales" />
-            <flux:select wire:model="metodo_pago" placeholder="Selecione un metodo de pago" class="mt-2 w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300">
-                <flux:select.option value="Qr">Qr</flux:select.option>
-            </flux:select>
-            <button wire:click="generarPedidoYQrConGuardado"
+                        <flux:input placeholder="Ingrese su dirección de entrega"
+                                    wire:model.defer="direccion_entrega" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300" />
+                    @elseif($tipo_entrega === 'Retiro_local')
+                        <div class="mt-4 mb-3 p-3 bg-gray-100 dark:bg-gray-700 rounded-md">
+                             <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Dirección de Entrega:
+                                <span class="font-normal">Retiro en local</span>
+                            </p>
+                        </div>
+                    @endif
+
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                        Notas adicionales (Opcional)
+                    </label>
+                    <flux:input placeholder="Notas adicionales para el pedido"
+                                wire:model.defer="notas_adicionales" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300" />
+
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 mt-4">
+                        Método de pago
+                    </label>
+                    <flux:select wire:model.defer="metodo_pago" placeholder="Seleccione un método de pago" class="w-full p-2 border border-gray-300 rounded dark:bg-gray-700 dark:text-gray-300">
+                        <flux:select.option value="Qr">Pago con QR</flux:select.option>
+                    </flux:select>
+                @endif
+            </div>
+            
+            <button wire:click="procesarPedido"
                     wire:loading.attr="disabled"
                     class="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                <span wire:loading wire:target="generarPedidoYQrConGuardado">Generando...</span>
-                <span wire:loading.remove wire:target="generarPedidoYQrConGuardado">Generar QR para Pagar</span>
+                <span wire:loading wire:target="procesarPedido">Generando...</span>
+                <span wire:loading.remove wire:target="procesarPedido">Procesar pedido</span>
             </button>
         </div>
+    @else
+        @if (!empty($codigoQrSvg))
+            <div class="text-center border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 class="text-2xl font-semibold mb-4 dark:text-white">Escanea para Pagar</h3>
+                <div class="flex justify-center my-6 p-4 bg-white rounded-lg shadow-md inline-block">
+                    {!! $codigoQrSvg !!}
+                </div>
+                <p class="text-gray-700 dark:text-gray-300 mb-2">
+                    Una vez realizado el pago, tu pedido será confirmado automáticamente.
+                </p>
+                @if($pedidoGuardado)
+                <div class="mt-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-md text-sm text-gray-600 dark:text-gray-300">
+                    <p>Número de Pedido: <strong class="text-gray-800 dark:text-white">{{ $pedidoGuardado->nro_pedido }}</strong></p>
+                    <p>Total a Pagar: <strong class="text-gray-800 dark:text-white">{{ number_format($pedidoGuardado->total, 2) }} Bs</strong></p>
+                    @if($pagoGuardado && $pagoGuardado->token_confirmacion && isset($urlConfirmacion))
+                        <p class="mt-3">Si tienes problemas con el QR, puedes usar el siguiente enlace para verificar tu pago:</p>
+                        <input type="text" value="{{ $urlConfirmacion }}" readonly 
+                               class="w-full p-2 mt-1 border border-gray-300 rounded dark:bg-gray-600 dark:text-gray-200 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                               onclick="this.select(); document.execCommand('copy'); alert('Enlace copiado al portapapeles');">
+                        <small class="text-xs text-gray-500 dark:text-gray-400">Haz clic en el enlace para copiarlo.</small>
+                    @endif
+                </div>
+                @endif
+                <a href="{{ route('home') }}" class="mt-8 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:shadow-outline">
+                    Volver al Inicio
+                </a>
+            </div>
+        @elseif ($pedidoGuardado && Auth::check() && Auth::user()->rol_id == 1 && $pedidoGuardado->metodo_pago !== 'Qr')
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
+                <div class="bg-green-100 dark:bg-green-700 border-l-4 border-green-500 dark:border-green-300 text-green-700 dark:text-green-200 p-6 mb-6 rounded-lg shadow-md" role="alert">
+                    <strong class="font-bold text-xl block mb-2">¡Pedido Registrado!</strong>
+                    <span class="block sm:inline text-base">El pedido ha sido registrado con éxito.</span>
+                    <p class="mt-2">Número de Pedido: <strong class="text-gray-800 dark:text-white">{{ $pedidoGuardado->nro_pedido }}</strong></p>
+                    <p>Método de pago: <strong class="text-gray-800 dark:text-white">{{ $pedidoGuardado->metodo_pago }}</strong></p>
+                </div>
+                <a href="{{ route('dashboard') ?? url('/dashboard') }}" class="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:shadow-outline">
+                    Ir al Dashboard
+                </a>
+            </div>
+        @elseif ($pedidoGuardado) 
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
+                <div class="bg-green-100 dark:bg-green-700 border-l-4 border-green-500 dark:border-green-300 text-green-700 dark:text-green-200 p-6 mb-6 rounded-lg shadow-md" role="alert">
+                    <strong class="font-bold text-xl block mb-2">¡Pedido Registrado!</strong>
+                    <span class="block sm:inline text-base">Tu pedido ha sido registrado con éxito.</span>
+                    <p class="mt-2">Número de Pedido: <strong class="text-gray-800 dark:text-white">{{ $pedidoGuardado->nro_pedido }}</strong></p>
+                    <p>Método de pago: <strong class="text-gray-800 dark:text-white">{{ $pedidoGuardado->metodo_pago }}</strong></p>
+                </div>
+                <a href="{{ route('dashboard') }}" class="mt-6 inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:shadow-outline">
+                    Volver al Inicio
+                </a>
+            </div>
+        @else
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
+                <p class="text-red-600 dark:text-red-400 text-lg p-4 bg-red-50 dark:bg-red-800 rounded-md">
+                    Algo salió mal al procesar tu pedido. Por favor, inténtalo de nuevo o contacta a soporte.
+                </p>
+                <a href="{{ url()->previous() }}" class="mt-6 inline-block bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:shadow-outline">
+                    Intentar de Nuevo
+                </a>
+            </div>
+        @endif
     @endif
 </div>

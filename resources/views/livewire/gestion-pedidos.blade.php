@@ -1,94 +1,162 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex justify-between items-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Gestión de Pedidos</h2>
+<div>
+    <!-- Título y Estadísticas -->
+    <flux:heading size="xl" class="mb-6">Reportes de Pedidos</flux:heading>
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-zinc-900 dark:text-white">{{ $estadisticas['total_pedidos'] }}</div>
+                <div class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Total Pedidos</div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600">{{ $estadisticas['en_proceso'] }}</div>
+                <div class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">En Proceso</div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-green-600">{{ $estadisticas['entregados'] }}</div>
+                <div class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Entregados</div>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6">
+            <div class="text-center">
+                <div class="text-3xl font-bold text-red-600">Bs. {{ number_format($estadisticas['total_ventas'], 2) }}</div>
+                <div class="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Ventas Totales</div>
+            </div>
+        </div>
     </div>
 
-    @if($pedidos->isEmpty())
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No hay pedidos registrados</h3>
-            <p class="mt-1 text-gray-500 dark:text-gray-400">Los nuevos pedidos aparecerán aquí automáticamente</p>
+    <!-- Controles y Filtros -->
+    <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <flux:heading size="lg">Filtros de Búsqueda</flux:heading>
+            <div class="flex gap-2">
+                <flux:button wire:click="limpiarFiltros" variant="ghost" size="sm">
+                    <flux:icon.x-mark variant="micro" class="mr-1" /> Limpiar
+                </flux:button>
+                @php
+                    $params = [];
+                    if ($filtroEstado) $params[] = 'estado=' . urlencode($filtroEstado);
+                    if ($filtroFecha) {
+                        $params[] = 'fecha_desde=' . $filtroFecha;
+                        $params[] = 'fecha_hasta=' . $filtroFecha;
+                    }
+                    $queryString = !empty($params) ? '?' . implode('&', $params) : '';
+                @endphp
+                <a href="{{ route('pedidos.reporte.pdf') }}{{ $queryString }}" 
+                   target="_blank"
+                   class="inline-flex items-center px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-600 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Generar PDF
+                </a>
+            </div>
         </div>
-    @else
-        <div class="space-y-4">
-            @foreach($pedidos as $pedido)
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border-l-4 
-                    @if($pedido->estado === 'Confirmado') border-yellow-500
-                    @elseif($pedido->estado === 'Preparando') border-blue-500
-                    @elseif($pedido->estado === 'Entregado') border-green-500
-                    @endif
-                    @if($loop->first && $pedido->estado !== 'Entregado') ring-2 ring-yellow-400 @endif">
-                    
-                    <div class="p-5">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <div class="flex items-center gap-2">
-                                    <span class="font-bold text-lg text-gray-800 dark:text-white">Pedido #{{ $pedido->nro_pedido }}</span>
-                                    <span class="px-2 py-1 text-xs rounded-full 
-                                        @if($pedido->estado === 'Confirmado') bg-yellow-100 text-yellow-800
-                                        @elseif($pedido->estado === 'Preparando') bg-blue-100 text-blue-800
-                                        @elseif($pedido->estado === 'Listo') bg-blue-100 text-cyan-800
-                                        @elseif($pedido->estado === 'Entregado') bg-green-100 text-green-800
-                                        @endif">
-                                        {{ $pedido->estado }}
-                                    </span>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-300 mt-1">
-                                    {{ $pedido->created_at->format('d/m/Y H:i') }} • 
-                                    {{ $pedido->cliente->usuario->nombre ?? 'Cliente no registrado' }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Total productos: {{ optional($pedido->detallePedidos)->count() ?? 0 }}</p>
-
-                                    @if(optional($pedido->detallePedidos)->isNotEmpty())
-                                        <div class="mt-2">
-                                            <p class="text-sm text-gray-600 dark:text-gray-300 font-semibold">Productos en el pedido:</p>
-                                            <ul class="list-disc list-inside ml-4 text-sm text-gray-500 dark:text-gray-400">
-                                                @foreach($pedido->detallePedidos as $detalle)
-                                                    <li class="flex items-center gap-2 text-red-300 text-xl">
-                                                        {{ $detalle->producto->nombre ?? 'Producto no disponible' }}
-                                                        @if(isset($detalle->cantidad))
-                                                            (x{{ $detalle->cantidad }})
-                                                        @endif
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-                                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Total: {{ number_format($pedido->total, 2) }} Bs</p>
-                                </div>
-                                
-                                @if($pedido->estado === 'Confirmado')
-                                    <button wire:click="cambiarEstado({{ $pedido->id }}, 'Preparando')" 
-                                        class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Preparar pedido
-                                    </button>
-                                @elseif($pedido->estado === 'Preparando')
-                                    <button wire:click="cambiarEstado({{ $pedido->id }}, 'Entregado')" 
-                                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition flex items-center gap-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                        </svg>
-                                        Marcar como entregado
-                                    </button>
-                                @else
-                                    <span class="text-sm text-gray-500 dark:text-gray-400">Pedido completado</span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <flux:select wire:model.live="filtroEstado" label="Estado" placeholder="Todos">
+                <option value="">Todos los estados</option>
+                <option value="Pendiente">Pendiente</option>
+                <option value="Confirmado">Confirmado</option>
+                <option value="Preparando">Preparando</option>
+                <option value="Listo">Listo</option>
+                <option value="Entregado">Entregado</option>
+                <option value="Cancelado">Cancelado</option>
+            </flux:select>
+            
+            <flux:input wire:model.live="buscarCliente" label="Buscar cliente" placeholder="Nombre o email..." />
+            
+            <flux:input wire:model.live="filtroFecha" type="date" label="Fecha" />
         </div>
-    @endif
+    </div>
+
+    <!-- Tabla de Pedidos -->
+    <div class="bg-white dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-zinc-200 dark:divide-zinc-700">
+                <thead class="bg-zinc-50 dark:bg-zinc-900">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Cliente</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Fecha</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Total</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Estado</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Tipo Entrega</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-zinc-800 divide-y divide-zinc-200 dark:divide-zinc-700">
+                    @forelse($pedidos as $pedido)
+                        <tr class="hover:bg-zinc-50 dark:hover:bg-zinc-700">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-zinc-900 dark:text-white">
+                                #{{ $pedido->id }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-700 dark:text-zinc-300">
+                                {{ $pedido->cliente->usuario->nombre ?? 'N/A' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-700 dark:text-zinc-300">
+                                {{ $pedido->created_at->format('d/m/Y H:i') }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">
+                                Bs. {{ number_format($pedido->total, 2) }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @php
+                                    $colorEstado = match($pedido->estado) {
+                                        'Pendiente' => 'zinc',
+                                        'Confirmado' => 'yellow',
+                                        'Preparando' => 'blue',
+                                        'Listo' => 'green',
+                                        'Entregado' => 'lime',
+                                        'Cancelado' => 'red',
+                                        default => 'zinc'
+                                    };
+                                @endphp
+                                <flux:badge :color="$colorEstado" size="sm">{{ $pedido->estado }}</flux:badge>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-zinc-700 dark:text-zinc-300">
+                                {{ $pedido->tipo_entrega ?? 'No especificado' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <div class="flex gap-2">
+                                    <a href="{{ route('pedidos.detalle', $pedido->id) }}" 
+                                       class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                                        <flux:icon.eye class="w-5 h-5" />
+                                    </a>
+                                    <a href="{{ route('pedidos.pdf', $pedido->id) }}" 
+                                       target="_blank"
+                                       class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
+                                        <flux:icon.document-text class="w-5 h-5" />
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center">
+                                    <flux:icon.inbox class="w-12 h-12 text-zinc-400 mb-3" />
+                                    <flux:heading size="lg">No hay pedidos</flux:heading>
+                                    <flux:subheading>Los pedidos aparecerán aquí</flux:subheading>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        
+        @if($pedidos->hasPages())
+            <div class="px-6 py-4 border-t border-zinc-200 dark:border-zinc-700">
+                {{ $pedidos->links() }}
+            </div>
+        @endif
+    </div>
 </div>

@@ -180,12 +180,6 @@ new class extends Component {
                     @error('imagen') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
 
                     @if($imagen)
-<<<<<<< HEAD
-                    <div class="mt-2">
-                        <img src="{{ $imagen->temporaryUrl() }}" alt="Vista previa de la imagen" class="w-32 h-32 object-cover rounded">
-                    </div>
-                @endif
-=======
                         <div class="mt-4 flex items-center space-x-4">
                             <span class="text-gray-700 dark:text-gray-300 text-sm">Vista previa de la nueva imagen:</span>
                             <img src="{{ $imagen->temporaryUrl() }}" alt="Vista previa de la imagen" class="w-24 h-24 object-cover rounded shadow-md">
@@ -196,7 +190,6 @@ new class extends Component {
                             <img src="{{ asset('storage/' . $current_imagen_path) }}" alt="Imagen actual del producto" class="w-24 h-24 object-cover rounded shadow-md">
                         </div>
                     @endif
->>>>>>> fda29aed533c3144cb0564f5493f5380777cb7ed
                 </div>
 
                 <div>

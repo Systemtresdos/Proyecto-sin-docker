@@ -17,30 +17,26 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Menu')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')"
-                        :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Inicio') }}
+                        :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}
                     </flux:navlist.item>
-
-                    <flux:navlist.item href="#" icon="list-bullet">Menu</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="list-bullet">Pedidos</flux:navlist.item>
+                    <flux:navlist.item icon="list-bullet" :href="route('pedidos.index')"
+                        :current="request()->routeIs('pedidos.*')" wire:navigate>{{ __('Pedidos') }}
+                    </flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Productos" expandable :expanded="false">
                     <flux:navlist.item href="{{ route('productos.index') }}" icon="hamburger">Lista de productos
                     </flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nuevo producto</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Categorias" expandable :expanded="false">
                     <flux:navlist.item href="{{ route('categorias.index') }}" icon="salad">Lista de categorias
                     </flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nueva categoria</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Roles" expandable :expanded="false">
                     <flux:navlist.item href="{{route('roles.index')}}" icon="person-standing">Lista de roles</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="plus">Nueva rol</flux:navlist.item>
                 </flux:navlist.group>
                 <flux:navlist.group heading="Usuarios" expandable :expanded="false">
                     <flux:navlist.item href="{{route('usuarios.index')}}" icon="users">Lista de usuarios</flux:navlist.item>
-                    <flux:navlist.item href="#" icon="user-plus">Nuevo usuario</flux:navlist.item>
-                </flux:navlist.group> --}}
+                </flux:navlist.group>
             </flux:navlist>
 
             <flux:spacer />
@@ -93,18 +89,17 @@
     <flux:header
         class="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         @if (auth()->user()->rol_id !== 2)
+            {{-- Toggle del sidebar para admin/encargado --}}
             <flux:sidebar.toggle class="lg:hidden" icon="bars-3" inset="left" />
-        @endif
-        {{-- boton de menu --}}
-        @if (auth()->user()->rol_id == 2)
+        @else
+            {{-- Menú desplegable móvil para clientes --}}
             <flux:dropdown>
                 <flux:button class="lg:hidden" icon="bars-3" inset="left"></flux:button>
 
                 <flux:menu>
                     <flux:menu.group heading="Menu">
                         <flux:menu.item href="{{ route('dashboard') }}" icon="home">Inicio</flux:menu.item>
-                        <flux:menu.item icon="hamburger">Menu del dia</flux:menu.item>
-                        <flux:menu.item icon="list-bullet">Pedidos</flux:menu.item>
+                        <flux:menu.item href="{{ route('pedidos.index') }}" icon="list-bullet">Mis Pedidos</flux:menu.item>
                     </flux:menu.group>
 
                     <flux:menu.group heading="Cuenta">
@@ -116,30 +111,28 @@
                     </flux:menu.group>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <flux:navmenu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
-                            variant="danger">Cerrar sesion</flux:navmenu.item>
+                        <flux:menu.item as="button" type="submit" icon="arrow-right-start-on-rectangle"
+                            variant="danger">Cerrar sesion</flux:menu.item>
                     </form>
                 </flux:menu>
             </flux:dropdown>
 
-        <flux:navbar>
-            <flux:navbar.item class="hidden lg:flex" href="{{ route('dashboard') }}" icon="home"
-                :current="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Inicio') }}
-            </flux:navbar.item>
-            <flux:navbar.item class="hidden lg:flex" href="#" icon="hamburger">Menu</flux:navbar.item>
-            <flux:navbar.item class="hidden lg:flex" href="#" icon="list-bullet">Pedidos</flux:navbar.item>
-        </flux:navbar>
+            {{-- Navbar horizontal para clientes en desktop --}}
+            <flux:navbar>
+                <flux:navbar.item class="hidden lg:flex" href="{{ route('dashboard') }}" icon="home"
+                    :current="request()->routeIs('dashboard')" wire:navigate>
+                    {{ __('Inicio') }}
+                </flux:navbar.item>
+                <flux:navbar.item class="hidden lg:flex" href="{{ route('pedidos.index') }}" icon="list-bullet"
+                    :current="request()->routeIs('pedidos.*')" wire:navigate>
+                    {{ __('Mis Pedidos') }}
+                </flux:navbar.item>
+            </flux:navbar>
         @endif
         <flux:spacer />
-        {{-- Buscador --}}
-        <flux:input.group class="max-w-xs">
-            <flux:input icon="magnifying-glass" placeholder="Buscar..." />
-            <flux:button>Buscar</flux:button>
-        </flux:input.group>
 
+        @if (auth()->user()->rol_id !== 1)
         {{-- Carrito de compras --}}
-        @if (auth()->user()->rol_id == 2)
         <flux:dropdown position="bottom" align="end">
             <flux:button variant="ghost" class="relative">
                 <flux:icon variant="solid" name="shopping-cart" class="text-red-500 dark:text-amber-300" />
@@ -152,6 +145,8 @@
         </flux:dropdown>
         @endif
 
+        {{-- Menú de usuario --}}
+        @if (auth()->user()->rol_id !== 1)
         <flux:dropdown position="bottom" align="end" class="ml-4 hidden lg:flex">
             <flux:profile :name="auth()->user()->nombre" :initials="auth()->user()->initials()"
                 icon-trailing="chevrons-up-down" />
@@ -187,6 +182,7 @@
                 </form>
             </flux:menu>
         </flux:dropdown>
+        @endif
 
     </flux:header>
     {{ $slot }}

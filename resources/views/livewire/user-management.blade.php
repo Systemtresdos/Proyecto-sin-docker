@@ -148,8 +148,4 @@
     <div class="mt-6">
         {{ $usuarios->links() }}
     </div>
-<<<<<<< HEAD
 </div>
-=======
-</div>
->>>>>>> fda29aed533c3144cb0564f5493f5380777cb7ed
